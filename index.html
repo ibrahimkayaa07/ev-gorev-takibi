@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#111827" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="description" content="Ev temizliği ve yapılacaklar listesi, oda bazlı görev takibi." />
+<title>Ev Görev Takibi</title>
+<style>
+:root {color-scheme:light;--bg:#f4f6fa;--card:#fff;--text:#182337;--muted:#65748a;--border:#e1e6ee;--accent:#216e55;--accentsoft:#e8f5ee;--shadow:0 6px 28px rgba(21,34,52,.045)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text)}
+main{max-width:1000px;padding:28px 18px 90px;margin:0 auto} h1{font-size:clamp(26px,4.5vw,36px);letter-spacing:-.8px;line-height:1.15;margin:8px 0} .lead{margin:10px 0 20px;color:var(--muted)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.pill{font-size:12px;color:var(--accent);font-weight:700;background:var(--accentsoft);border-radius:99px;padding:6px 10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)}.summary{padding:22px;margin:20px 0}.sumrow{display:flex;justify-content:space-between;align-items:center;gap:10px}.count{font-size:34px;font-weight:800;line-height:1.15;letter-spacing:-1px}.small{font-size:12px;color:var(--muted)}.pct{font-size:30px;font-weight:800}.track{width:100%;height:11px;border-radius:99px;background:#e6ebf0;overflow:hidden;margin:16px 0}.track>div{background:var(--accent);height:100%;width:0%;transition:width .18s ease;border-radius:inherit}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.stat{background:#f7f9fb;border-radius:12px;padding:11px}.stat strong{display:block;font-size:19px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.btn{background:white;border:1px solid #cad4df;border-radius:11px;padding:10px 13px;font-weight:650;color:var(--text);font:inherit;cursor:pointer}.btn:focus-visible,.task:focus-within{outline:3px solid #91c4b0;outline-offset:2px}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.danger{color:#a12834}.btn:disabled{opacity:.5;cursor:not-allowed}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center}.controls input,.controls select{min-height:42px;border:1px solid #cad4df;border-radius:11px;padding:10px 12px;background:#fff;color:var(--text);font:inherit}.controls input{flex:1;min-width:170px}.controls select{flex:0 1 210px}.room{margin:12px 0;overflow:hidden}.room-head{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:15px 18px;background:#fff;border:0;width:100%;text-align:left;cursor:pointer;color:inherit}.room-head h2{font-size:17px;margin:0}.room-count{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent);white-space:nowrap}.roombar{background:#e6ebf0;height:5px}.roombar>div{height:100%;background:#458e76}.contents{padding:4px 18px 17px}.group{margin-top:17px}.group h3{font-size:13px;color:#546477;text-transform:uppercase;letter-spacing:.4px;margin:0 0 7px}.task{display:flex;align-items:flex-start;gap:11px;padding:10px 6px;border-bottom:1px solid #eff2f6;cursor:pointer;line-height:1.45;min-height:43px}.task:last-child{border-bottom:none}.task input{appearance:none;margin:2px 0 0;flex:0 0 21px;width:21px;height:21px;border-radius:6px;border:2px solid #96a5b6;background:#fff;display:grid;place-items:center;cursor:pointer}.task input:checked{background:var(--accent);border-color:var(--accent)}.task input:checked:after{content:'✓';font-weight:900;color:#fff;line-height:1}.task.done span{text-decoration:line-through;color:#84909d}.task.hidden,.group.hidden,.room.hidden{display:none} .nothing{padding:18px;color:var(--muted)}
+.info{margin:18px 0;padding:15px 18px;border:1px dashed #bbcad7;background:#fff;border-radius:14px;color:#536378;font-size:13px}.info strong{color:var(--text)}.status{font-size:12px;color:var(--muted)} .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)} footer{margin:24px 0;font-size:12px;color:var(--muted)}
+@media(min-width:720px){.rooms{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}.room{margin:0}.room.wide{grid-column:1/-1}.room.wide .contents{display:grid;grid-template-columns:1fr 1fr;gap:20px}.room.wide .group{margin-top:13px}} @media print{body{background:#fff}.actions,.controls,.info,.status,footer,.pill{display:none!important}main{max-width:none;padding:0}.room{break-inside:avoid;box-shadow:none} .room .contents{display:block!important}.room.hidden,.task.hidden,.group.hidden{display:block!important}.task{display:flex!important}.summary{box-shadow:none}}
+</style>
+</head>
+<body>
+<main>
+ <div class="top"><div><h1>🏠 Ev Görev Takibi</h1><p class="lead">Her işi tamamladığında kutucuğu işaretle. İlerlemen otomatik hesaplanır.</p></div><span class="pill">6 oda · Temizlik + Yapılacaklar</span></div>
+ <section class="card summary" aria-label="Genel ilerleme">
+   <div class="sumrow"><div><div class="small">TAMAMLANAN / TOPLAM GÖREV</div><div class="count" id="total">0 / 0</div></div><div class="pct" id="percentage">%0</div></div>
+   <div class="track" role="progressbar" aria-label="Genel tamamlanma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="globalProgress"><div id="globalBar"></div></div>
+   <div class="stats"><div class="stat"><span class="small">Tamamlanan</span><strong id="completed">0</strong></div><div class="stat"><span class="small">Kalan</span><strong id="remaining">0</strong></div><div class="stat"><span class="small">Biten odalar</span><strong id="finishedRooms">0/6</strong></div></div>
+ </section>
+ <div class="actions">
+  <button class="btn primary" id="backupBtn" type="button">⬇ Yedeği indir</button>
+  <button class="btn" id="loadBtn" type="button">⬆ Yedek yükle</button>
+  <button class="btn" id="printBtn" type="button">🖨 Yazdır / PDF</button>
+  <button class="btn danger" id="resetBtn" type="button">↺ İşaretleri sıfırla</button>
+  <input type="file" accept="application/json,.json" id="fileInput" class="sr" />
+ </div>
+ <div class="controls"><input id="search" type="search" placeholder="Görevlerde ara..." aria-label="Görevlerde ara" /><select id="filter" aria-label="Görev filtresi"><option value="all">Tüm görevler</option><option value="open">Yalnızca yapılmayanlar</option><option value="done">Yalnızca tamamlananlar</option></select></div>
+ <p class="status" id="saveStatus" role="status">Kayıt durumu kontrol ediliyor…</p>
+ <div class="rooms" id="rooms"></div>
+ <aside class="info"><strong>Not:</strong> İşaretler bu sayfayı açtığın <strong>aynı tarayıcıda ve cihazda</strong> saklanır. Başka telefona geçersen veya tarayıcı verilerini silersen otomatik taşınmaz. <strong>Yedeği indir</strong> ile durumunu dosyaya kaydet, gerektiğinde <strong>Yedek yükle</strong> ile geri getir. Bu sayfa internete hiçbir veri göndermez.</aside>
+ <footer>Ev Görev Takibi · Çevrimdışı çalışabilir · Görevleri tek tek işaretleyebilirsin.</footer>
+</main>
+<script>
+(() => {
+'use strict';
+const rooms = [
+{id:'yatak',name:'YATAK ODASI',groups:[
+{label:'Temizlik',items:['Baza temizliği','Şifonyer temizliği','Etajer temizliği','Zemin temizliği','Gardırop temizliği','Avize temizliği','Pencere ve cam temizliği']},
+{label:'Yapılacaklar',items:['Gardırobun fazlalığının kesilmesi','Bacalık takılması','Dolap içinin yerleştirilmesi','Baza içinin yerleştirilmesi']}]},
+{id:'calisma',name:'ÇALIŞMA ODASI',groups:[
+{label:'Temizlik',items:['Duvarların silinmesi','Modemlerin silinmesi','Televizyonun silinmesi','Balkon kapısının temizlenmesi','Sürgü arasının temizlenmesi','Avizenin temizlenmesi','Camların silinmesi','Camdaki kaplamanın çıkarılması']},
+{label:'Yapılacaklar',items:['Çalışma masasının kurulması','Çalışma sandalyelerinin kurulması','Uzatma montajının yapılması','Kapı stoperinin düzeltilmesi','Kapının boyanması','Kabloların gizlenmesi']}]},
+{id:'banyo',name:'BANYO',groups:[
+{label:'Temizlik',items:['Duvarların temizlenmesi','Aynaların temizlenmesi','Menfezin temizlenmesi','Dolapların ve içlerinin temizlenmesi','Tavanın kuru bezle temizlenmesi','Kabin içinin temizlenmesi','Cam tuğlaların temizlenmesi','Lavabonun temizlenmesi','Musluğun temizlenmesi']},
+{label:'Yapılacaklar',items:['Cam kapının yapılması','Eşik mermerinin yapılması','Kapının zımparalanması','Kapının boyanması','Cam tuğlaların Kalekim kalıntılarının temizlenmesi','Kapı kilit mekanizmasının yapılması','LED bağlantısının yapılması','Alüminyum çerçevenin yapılması']}]},
+{id:'hol',name:'HOL',groups:[
+{label:'Temizlik',items:['Vestiyer temizliği','Avizelerin temizliği','Zemin temizliği','Çelik kapının temizliği','Demir kapının temizliği']},
+{label:'Yapılacaklar',items:['Boya yapılması','Avize sabitleme','Alçı zımparalama']}]},
+{id:'kurutma',name:'KURUTMA ODASI',groups:[
+{label:'Temizlik',items:['Menfez temizliği','Zemin temizliği']},
+{label:'Yapılacaklar',items:['Menfez takılması','Boya yapılması','İnce dolap takılması']}]},
+{id:'salon',name:'SALON VE MUTFAK',groups:[
+{label:'Temizlik',items:['Camların silinmesi','Kapı ve pencere temizliği','Zemin temizliği','Lambiri temizliği','Avize temizliği','Televizyon temizliği','Taş duvar temizliği','Dolap temizliği','Ada temizliği','Ankastre temizliği','Kombi temizliği','Petek temizliği','Fransız balkon temizliği','Sandalye temizliği','Beyaz eşya temizliği','Genel temizlik']},
+{label:'Yapılacaklar',items:['Ada yapımı','Ada destek tahtasının kısaltılması','Sandalyelerin verniklenmesi','Süpürgelik yapıştırılması','Dolap montajı','Taşların düzeltilmesi','İkili uzatma yapılması','Fırının boyanması','Tost makinesinin boyanması','Bacaya kapak takılması','Boatların takılması','Doğrama tahtası','Dolap tadilatı','Dondurucu kulpu','Dolap içi düzen','Raf düzeni','Televizyon ünitesi ayağı','Kanepe arkası raf','Cam tuğla sehpa']}]}
+];
+const storeKey = 'ev-gorev-takip-v1';
+const state = {};
+const all = [];
+rooms.forEach(room => room.groups.forEach((group,gi) => group.items.forEach((label,i) => all.push({id:`${room.id}:${gi}:${i}`,room:room.id,label,group:group.label}))));
+let canSave = false;
+const $ = id => document.getElementById(id);
+const status = msg => { $('saveStatus').textContent=msg; };
+try { const raw=localStorage.getItem(storeKey); if(raw){const saved=JSON.parse(raw); if(saved && typeof saved==='object') all.forEach(item=>{if(saved[item.id]===true)state[item.id]=true;});}localStorage.setItem(storeKey,JSON.stringify(state));canSave=true;status('✓ Değişiklikler bu tarayıcıya otomatik kaydediliyor.');}catch(e){status('⚠ Bu tarayıcıda otomatik kayıt kullanılamıyor. Yedeği indir ile ilerlemeni saklayabilirsin.');}
+const roomElements=new Map();
+rooms.forEach(room=>{
+ const article=document.createElement('section');article.className='card room'+(room.id==='salon'?' wide':'');article.setAttribute('data-room',room.id);
+ const head=document.createElement('button');head.type='button';head.className='room-head';head.setAttribute('aria-expanded','true');
+ const title=document.createElement('h2');title.textContent=room.name;const count=document.createElement('span');count.className='room-count';head.append(title,count);
+ const bar=document.createElement('div');bar.className='roombar';const fill=document.createElement('div');bar.append(fill);
+ const contents=document.createElement('div');contents.className='contents';head.addEventListener('click',()=>{const collapsed=contents.hidden;contents.hidden=!collapsed;head.setAttribute('aria-expanded',String(collapsed));});
+ room.groups.forEach((group,gi)=>{const section=document.createElement('div');section.className='group';const h=document.createElement('h3');h.textContent=(group.label==='Temizlik'?'✦ ':'🛠 ')+group.label;section.append(h);
+ group.items.forEach((label,i)=>{const id=`${room.id}:${gi}:${i}`;const wrap=document.createElement('label');wrap.className='task'+(state[id]?' done':'');wrap.setAttribute('data-id',id);
+ const check=document.createElement('input');check.type='checkbox';check.checked=!!state[id];check.setAttribute('aria-label',label);const span=document.createElement('span');span.textContent=label;wrap.append(check,span);
+ check.addEventListener('change',()=>{if(check.checked)state[id]=true;else delete state[id];wrap.classList.toggle('done',check.checked);save();renderProgress();applyFilter();});section.append(wrap);});contents.append(section);});article.append(head,bar,contents);$('rooms').append(article);
+ roomElements.set(room.id,{article,count,fill,contents});
+});
+function save(){if(!canSave)return;try{localStorage.setItem(storeKey,JSON.stringify(state));status('✓ Son değişiklikler kaydedildi.');}catch(e){canSave=false;status('⚠ Kayıt başarısız. Yedeği indir ile kaydedebilirsin.');}}
+function renderProgress(){const done=all.filter(t=>state[t.id]).length;const pct=Math.round(done/all.length*100);$('total').textContent=`${done} / ${all.length}`;$('percentage').textContent=`%${pct}`;$('globalBar').style.width=pct+'%';$('globalProgress').setAttribute('aria-valuenow',String(pct));$('completed').textContent=done;$('remaining').textContent=all.length-done;
+ let finishedRooms=0;rooms.forEach(room=>{const tasks=all.filter(t=>t.room===room.id);const count=tasks.filter(t=>state[t.id]).length;roomElements.get(room.id).count.textContent=`${count} / ${tasks.length}`;roomElements.get(room.id).fill.style.width=(count/tasks.length*100)+'%';if(count===tasks.length)finishedRooms++;});$('finishedRooms').textContent=`${finishedRooms}/${rooms.length}`;}
+function normalize(s){return s.toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+function applyFilter(){const term=normalize($('search').value.trim());const filter=$('filter').value;rooms.forEach(room=>{let count=0;const el=roomElements.get(room.id);el.article.querySelectorAll('.group').forEach(group=>{let groupCount=0;group.querySelectorAll('.task').forEach(task=>{const id=task.getAttribute('data-id');const t=all.find(x=>x.id===id);const match=normalize(t.label+' '+t.group+' '+room.name).includes(term)&& (filter==='all'||(filter==='done'&&state[id])||(filter==='open'&&!state[id]));task.classList.toggle('hidden',!match);if(match){groupCount++;count++;}});group.classList.toggle('hidden',groupCount===0);});el.article.classList.toggle('hidden',count===0);});}
+$('search').addEventListener('input',applyFilter);$('filter').addEventListener('change',applyFilter);
+$('resetBtn').addEventListener('click',()=>{if(!confirm('Tüm işaretleri kaldırmak istediğine emin misin?'))return;Object.keys(state).forEach(k=>delete state[k]);document.querySelectorAll('.task').forEach(task=>{task.querySelector('input').checked=false;task.classList.remove('done');});save();renderProgress();applyFilter();});
+$('backupBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({application:'Ev Görev Takibi',version:1,exportedAt:new Date().toISOString(),checked:state},null,2)],{type:'application/json'});const a=document.createElement('a');const url=URL.createObjectURL(blob);a.href=url;a.download='ev-gorev-yedek-'+new Date().toISOString().slice(0,10)+'.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+$('loadBtn').addEventListener('click',()=>$('fileInput').click());
+$('fileInput').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{const content=JSON.parse(await f.text());if(content.application!=='Ev Görev Takibi'||content.version!==1||!content.checked||typeof content.checked!=='object')throw Error('Geçersiz yedek dosyası');if(!confirm('Yedekteki işaretler mevcut durumun yerine geçsin mi?'))return;Object.keys(state).forEach(k=>delete state[k]);all.forEach(t=>{if(content.checked[t.id]===true)state[t.id]=true;});document.querySelectorAll('.task').forEach(task=>{const checked=!!state[task.getAttribute('data-id')];task.querySelector('input').checked=checked;task.classList.toggle('done',checked);});save();renderProgress();applyFilter();alert('Yedek başarıyla yüklendi.');}catch(error){alert('Yedek yüklenemedi: '+error.message);}finally{e.target.value='';}});
+$('printBtn').addEventListener('click',()=>{document.querySelectorAll('.contents').forEach(el=>{el.hidden=false;el.previousElementSibling?.setAttribute('aria-expanded','true');});window.print();});
+renderProgress();applyFilter();
+})();
+</script>
+</body>
+</html>
